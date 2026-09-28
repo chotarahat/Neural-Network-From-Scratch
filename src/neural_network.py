@@ -30,6 +30,58 @@ class NeuralNetwork:
 
             self.weights.append(weights)
             self.biases.append(biases)
+    def backward(self, activations, y):
+        """
+        Perform backward propagation.
+
+        Returns:
+            Gradients for weights and biases.
+        """
+        m = y.shape[0]
+
+        dW = [np.zeros_like(w) for w in self.weights]
+        dB = [np.zeros_like(b) for b in self.biases]
+
+        output = activations[-1]
+
+        # Difference between prediction and target
+        error = output - y
+
+        # Work backward through every layer
+        for i in range(len(self.weights) - 1, -1, -1):
+
+            if i == len(self.weights) - 1:
+                # Output layer
+                delta = error * self.sigmoid_derivative(
+                    activations[i + 1]
+                )
+            else:
+                # Hidden layer
+                delta = (
+                    np.dot(delta, self.weights[i + 1].T)
+                    * self.sigmoid_derivative(activations[i + 1])
+                )
+
+            # Weight gradient
+            dW[i] = np.dot(
+                activations[i].T,
+                delta
+            ) / m
+
+            # Bias gradient
+            dB[i] = np.sum(
+                delta,
+                axis=0,
+                keepdims=True
+            ) / m
+
+        return dW, dB
+    def update_weights(self, dW, dB):
+        """Update weights and biases using gradient descent."""
+
+        for i in range(len(self.weights)):
+            self.weights[i] -= self.learning_rate * dW[i]
+            self.biases[i] -= self.learning_rate * dB[i]
 
     @staticmethod
     def sigmoid(x):
