@@ -1,28 +1,32 @@
 # Neural Network From Scratch
 
-A small neural network implemented from scratch using NumPy.
+A small feed-forward neural network implemented from scratch using
+NumPy, without using PyTorch, TensorFlow, or Keras.
 
-The project uses the XOR problem to demonstrate how a neural
-network works internally.
+The network is trained on the XOR problem to demonstrate the core
+ideas behind neural-network learning.
 
-## Part 1
+## What This Project Demonstrates
 
-Implemented:
-
-- XOR dataset
-- Weight initialization
-- Bias initialization
-- Sigmoid activation
-- Tanh and ReLU functions
 - Forward propagation
+- Sigmoid activation
 - Binary cross-entropy loss
+- Backpropagation
+- Gradient calculation
+- Gradient descent
+- Training loops
 - Prediction
+- Accuracy evaluation
+- Decision-boundary visualization
 
 ## Architecture
 
 ```text
-2 Input Neurons
-      ↓
-4 Hidden Neurons
-      ↓
-1 Output Neuron
+Input Layer
+2 neurons
+   ↓
+Hidden Layer
+4 neurons
+   ↓
+Output Layer
+1 neuron
