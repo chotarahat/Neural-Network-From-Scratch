@@ -3,10 +3,13 @@ from pathlib import Path
 
 import numpy as np
 
-sys.path.append(str(Path(__file__).resolve().parent.parent))
+sys.path.append(
+    str(Path(__file__).resolve().parent.parent)
+)
 
 from data.xor import get_xor_data
 from src.neural_network import NeuralNetwork
+from src.training import train
 
 
 def main():
@@ -19,21 +22,42 @@ def main():
         learning_rate=0.5,
     )
 
-    activations = network.forward(X)
-    predictions = activations[-1]
+    print("Initial predictions:")
+    print(network.predict(X))
 
-    loss = network.compute_loss(predictions, y)
+    print()
 
-    print("XOR Input:")
-    print(X)
+    print("Training...")
+    losses = train(
+        network,
+        X,
+        y,
+        epochs=4000,
+        print_every=1000,
+    )
 
-    print("\nTarget:")
-    print(y)
+    print()
 
-    print("\nInitial Predictions:")
-    print(predictions)
+    print("Final predictions:")
+    print(network.predict(X))
 
-    print(f"\nInitial Loss: {loss:.4f}")
+    print()
+
+    binary_predictions = (
+        network.predict(X) > 0.5
+    ).astype(int)
+
+    accuracy = np.mean(
+        binary_predictions == y
+    )
+
+    print("Binary predictions:")
+    print(binary_predictions)
+
+    print()
+
+    print(f"Accuracy: {accuracy:.4f}")
+    print(f"Final loss: {losses[-1]:.4f}")
 
 
 if __name__ == "__main__":
